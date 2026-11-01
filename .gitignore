@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Production builds
+dist/
+*/dist/
+web-build/
+*/web-build/
+
+# Expo
+.expo/
+*/.expo/
+
+# Environment files
+.env
+.env.*
+!.env.example
+*.local
+
+# System & IDE
+.DS_Store
+.idea/
+.vscode/
+*.log

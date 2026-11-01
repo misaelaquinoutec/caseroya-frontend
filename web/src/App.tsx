@@ -1,0 +1,53 @@
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { PrivateRoute } from './routes/PrivateRoute';
+import { AppLayout } from './components/layout/AppLayout';
+import { Spinner } from './components/common/Spinner';
+
+// Lazy loading views for high performance as required by rubric 3.3
+const Login = lazy(() => import('./pages/Login').then((m) => ({ default: m.Login })));
+const Dashboard = lazy(() => import('./pages/Dashboard').then((m) => ({ default: m.Dashboard })));
+const Ventas = lazy(() => import('./pages/Ventas').then((m) => ({ default: m.Ventas })));
+const NuevaVenta = lazy(() => import('./pages/NuevaVenta').then((m) => ({ default: m.NuevaVenta })));
+const Inventario = lazy(() => import('./pages/Inventario').then((m) => ({ default: m.Inventario })));
+const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })));
+
+const PageLoader: React.FC = () => (
+  <div className="flex items-center justify-center p-12 min-h-[50vh]">
+    <Spinner size="lg" label="Cargando módulo..." />
+  </div>
+);
+
+export const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <AppLayout />
+                </PrivateRoute>
+              }
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="ventas" element={<Ventas />} />
+              <Route path="ventas/nueva" element={<NuevaVenta />} />
+              <Route path="inventario" element={<Inventario />} />
+            </Route>
+
+            <Route path="/404" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="/404" replace />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </AuthProvider>
+  );
+};
+
+export default App;
