@@ -9,6 +9,7 @@ export interface AuthResponse {
   token: string;
   codigoUsuario?: string;
   perfilId?: string;
+  rol?: string;
   nombre?: string;
 }
 

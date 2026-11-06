@@ -9,7 +9,7 @@ export const authService = {
       const user: User = {
         codigoUsuario: credentials.codigoUsuario,
         nombre: response.data.nombre || credentials.codigoUsuario,
-        perfilId: response.data.perfilId || 'ADMIN',
+        perfilId: response.data.perfilId || response.data.rol || 'ADM',
       };
       localStorage.setItem('user', JSON.stringify(user));
     }

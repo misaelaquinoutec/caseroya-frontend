@@ -4,6 +4,7 @@ import { Card } from '../components/common/Card';
 import { Button } from '../components/common/Button';
 import { Input } from '../components/common/Input';
 import { Alert } from '../components/common/Alert';
+import { useToast } from '../context/ToastContext';
 import { ventaService } from '../services/ventaService';
 import { productoService } from '../services/productoService';
 import { useAuth } from '../context/AuthContext';
@@ -20,6 +21,7 @@ interface ItemForm {
 export const NuevaVenta: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [clienteId, setClienteId] = useState<number>(1);
   const [monedaId] = useState<number>(1);
@@ -38,7 +40,6 @@ export const NuevaVenta: React.FC = () => {
           setProductosDisponibles(prods);
         }
       } catch {
-        // Fallback demo data
         setProductosDisponibles([
           { id: 1, nombre: 'Gaseosa 3L', precioBase: 12.5 },
           { id: 2, nombre: 'Arroz 1kg', precioBase: 4.8 },
@@ -103,6 +104,12 @@ export const NuevaVenta: React.FC = () => {
       return;
     }
 
+    const invalidItem = items.find((it) => it.cantidad <= 0 || it.precioUnitario <= 0);
+    if (invalidItem) {
+      setError('La cantidad y precio de cada producto deben ser mayores a 0.');
+      return;
+    }
+
     const payload: RegistrarVentaDto = {
       clienteId: Number(clienteId),
       usuarioId: user?.codigoUsuario || 'ADMIN01',
@@ -116,10 +123,13 @@ export const NuevaVenta: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      await ventaService.registrarVenta(payload);
-      navigate('/ventas');
+      const res = await ventaService.registrarVenta(payload);
+      toast.success(`¡Venta #${res.id || ''} registrada exitosamente!`);
+      navigate(`/ventas/${res.id || ''}`);
     } catch (err: unknown) {
-      setError((err as Error)?.message || 'Error al registrar venta');
+      const msg = (err as Error)?.message || 'Error al registrar venta';
+      setError(msg);
+      toast.error(msg);
     } finally {
       setIsSubmitting(false);
     }
@@ -150,6 +160,7 @@ export const NuevaVenta: React.FC = () => {
             <Input
               label="ID de Cliente"
               type="number"
+              min="1"
               value={clienteId}
               onChange={(e) => setClienteId(Number(e.target.value))}
               required
@@ -225,6 +236,7 @@ export const NuevaVenta: React.FC = () => {
                   <Input
                     label="Precio Unit."
                     type="number"
+                    min="0.01"
                     step="0.01"
                     value={item.precioUnitario}
                     onChange={(e) =>
@@ -276,6 +288,7 @@ export const NuevaVenta: React.FC = () => {
           <Button
             type="submit"
             variant="primary"
+            disabled={isSubmitting}
             isLoading={isSubmitting}
             leftIcon={<ShoppingCart className="w-4 h-4" />}
           >
