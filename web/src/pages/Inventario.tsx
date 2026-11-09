@@ -4,11 +4,20 @@ import { Badge } from '../components/common/Badge';
 import { Spinner } from '../components/common/Spinner';
 import { Pagination } from '../components/common/Pagination';
 import { Input } from '../components/common/Input';
+import { EmptyState } from '../components/common/EmptyState';
 import { useDebounce } from '../hooks/useDebounce';
 import { usePagination } from '../hooks/usePagination';
 import { productoService } from '../services/productoService';
 import type { Producto } from '../types';
 import { Search } from 'lucide-react';
+
+const MOCK_PRODUCTOS: Producto[] = [
+  { id: 1, nombre: 'Gaseosa 3L', descripcion: 'Bebida carbonatada', precioBase: 12.5, stockActual: 45 },
+  { id: 2, nombre: 'Arroz Extra 1kg', descripcion: 'Grano superior', precioBase: 4.8, stockActual: 120 },
+  { id: 3, nombre: 'Aceite Vegetal 1L', descripcion: 'Aceite de cocina', precioBase: 8.5, stockActual: 15 },
+  { id: 4, nombre: 'Azúcar Rubia 1kg', descripcion: 'Azúcar refinada', precioBase: 3.8, stockActual: 8 },
+  { id: 5, nombre: 'Leche Evaporada 400g', descripcion: 'Lácteo entero', precioBase: 4.2, stockActual: 60 },
+];
 
 export const Inventario: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
@@ -21,25 +30,9 @@ export const Inventario: React.FC = () => {
     const load = async () => {
       try {
         const data = await productoService.obtenerProductos();
-        if (Array.isArray(data) && data.length > 0) {
-          setProductos(data);
-        } else {
-          setProductos([
-            { id: 1, nombre: 'Gaseosa 3L', descripcion: 'Bebida carbonatada', precioBase: 12.5, stockActual: 45 },
-            { id: 2, nombre: 'Arroz Extra 1kg', descripcion: 'Grano superior', precioBase: 4.8, stockActual: 120 },
-            { id: 3, nombre: 'Aceite Vegetal 1L', descripcion: 'Aceite de cocina', precioBase: 8.5, stockActual: 15 },
-            { id: 4, nombre: 'Azúcar Rubia 1kg', descripcion: 'Azúcar refinada', precioBase: 3.8, stockActual: 8 },
-            { id: 5, nombre: 'Leche Evaporada 400g', descripcion: 'Lácteo entero', precioBase: 4.2, stockActual: 60 },
-          ]);
-        }
+        setProductos(Array.isArray(data) && data.length > 0 ? data : MOCK_PRODUCTOS);
       } catch {
-        setProductos([
-          { id: 1, nombre: 'Gaseosa 3L', descripcion: 'Bebida carbonatada', precioBase: 12.5, stockActual: 45 },
-          { id: 2, nombre: 'Arroz Extra 1kg', descripcion: 'Grano superior', precioBase: 4.8, stockActual: 120 },
-          { id: 3, nombre: 'Aceite Vegetal 1L', descripcion: 'Aceite de cocina', precioBase: 8.5, stockActual: 15 },
-          { id: 4, nombre: 'Azúcar Rubia 1kg', descripcion: 'Azúcar refinada', precioBase: 3.8, stockActual: 8 },
-          { id: 5, nombre: 'Leche Evaporada 400g', descripcion: 'Lácteo entero', precioBase: 4.2, stockActual: 60 },
-        ]);
+        setProductos(MOCK_PRODUCTOS);
       } finally {
         setIsLoading(false);
       }
@@ -87,6 +80,13 @@ export const Inventario: React.FC = () => {
 
         {isLoading ? (
           <Spinner size="lg" label="Cargando existencias..." />
+        ) : filtered.length === 0 ? (
+          <EmptyState
+            title="Sin resultados"
+            description={`No se encontraron productos para "${debouncedSearch}".`}
+            actionText="Limpiar búsqueda"
+            onAction={() => setSearchTerm('')}
+          />
         ) : (
           <div>
             <div className="overflow-x-auto">
