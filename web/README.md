@@ -5,12 +5,8 @@
 - **Nombre del Curso:** CS 2031 Desarrollo Basado en Plataformas
 - **Periodo Académico:** 2026-2
 - **Integrantes del Equipo:**
-    - Adrian Omar Cespedes Llanos – 202510675
     - Enzo Mathias Calderon Soto – 202510032
-    - Juan Diego Lama Flor – 202410401
     - Misael Osvaldo Aquino Hidalgo – 202510626
-    - Victor Paolo Soto Ruiz – 202510343
-
 ---
 
 ## 2. Índice
