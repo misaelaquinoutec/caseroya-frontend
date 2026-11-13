@@ -1,11 +1,16 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
+const rawUrl = import.meta.env.VITE_API_URL || 'https://proyecto-caseroya-cr2n.onrender.com/api';
+const normalizedBaseURL = rawUrl.replace(/\/+$/, '').endsWith('/api')
+  ? rawUrl.replace(/\/+$/, '')
+  : `${rawUrl.replace(/\/+$/, '')}/api`;
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
+  baseURL: normalizedBaseURL,
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000,
+  timeout: 30000,
 });
 
 api.interceptors.request.use(
