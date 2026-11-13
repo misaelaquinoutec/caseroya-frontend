@@ -66,10 +66,10 @@ web/src/
 
 ---
 
-## ✨ Características Principales (Cumplimiento de Rúbrica)
+## ✨ Características Principales
 
-* **Consumo 100% Real de API REST**: Configurado con Axios (`api.ts`), inyección automática de `Authorization: Bearer <token>`, cierre de sesión automático ante `401 Unauthorized` y cancelación de peticiones con `AbortController`.
-* **15 Componentes Reutilizables**: Más de los 10 requeridos por la rúbrica, todos tipados con TypeScript y siguiendo el principio de responsabilidad única (SRP).
+* **Consumo de API REST**: Configurado con Axios (`api.ts`), inyección automática de `Authorization: Bearer <token>`, cierre de sesión automático ante `401 Unauthorized` y cancelación de peticiones con `AbortController`.
+* **Componentes Reutilizables**: 15 componentes modulares tipados con TypeScript y diseñados bajo el principio de responsabilidad única (SRP).
 * **Routing Avanzado y Lazy Loading**: Rutas protegidas (`PrivateRoute`), rutas dinámicas (`/ventas/:id`), sincronización de filtros y paginación en query params (`?page=1&size=10&search=...`), carga diferida con `React.lazy` + `Suspense`, `Breadcrumbs` y página `404`.
 * **Manejo de Errores y Estados de Carga**: `ErrorBoundary` global, indicadores `Skeleton` y `Spinner`, notificaciones `Toast`, prevención de doble envío y botón de reintento (`retry`).
 * **Dark Mode (Modo Oscuro)**: Selector de tema claro/oscuro persistente en `localStorage` integrado en la barra de navegación.
@@ -98,17 +98,6 @@ web/src/
    ```bash
    npm run build
    ```
-
----
-
-## 🌐 Despliegue en Vercel / Render Static Site
-
-Para desplegar el frontend web en **Vercel** (en 1 clic):
-1. Importa el repositorio `misaelaquinoutec/caseroya-frontend` en [Vercel](https://vercel.com/new).
-2. En **Root Directory**, selecciona **`web`**.
-3. En **Environment Variables**, agrega:
-   * `VITE_API_URL` = `https://proyecto-caseroya-cr2n.onrender.com/api`
-4. Haz clic en **Deploy** (el archivo `vercel.json` incluido ya configura las rutas SPA automáticamente).
 
 ---
 
