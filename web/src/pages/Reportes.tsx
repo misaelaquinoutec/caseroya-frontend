@@ -20,7 +20,7 @@ export const Reportes: React.FC = () => {
   const [ventas, setVentas] = useState<Venta[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchReporte = async () => {
+  const fetchReporte = async (showNotification = false) => {
     setIsLoading(true);
     try {
       const data = await ventaService.obtenerReporte(desde, hasta);
@@ -29,7 +29,9 @@ export const Reportes: React.FC = () => {
       } else {
         setVentas([]);
       }
-      toast.info(`Reporte actualizado: ${data?.length || 0} operaciones encontradas.`);
+      if (showNotification) {
+        toast.info(`Reporte actualizado: ${data?.length || 0} operaciones encontradas.`);
+      }
     } catch {
       // Fallback: load general sales if custom report endpoint is restricted
       try {
@@ -48,7 +50,7 @@ export const Reportes: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchReporte();
+    fetchReporte(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -98,7 +100,7 @@ export const Reportes: React.FC = () => {
           </div>
           <Button
             variant="primary"
-            onClick={fetchReporte}
+            onClick={() => fetchReporte(true)}
             isLoading={isLoading}
             leftIcon={<Filter className="w-4 h-4" />}
           >

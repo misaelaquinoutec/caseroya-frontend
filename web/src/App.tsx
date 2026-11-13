@@ -7,7 +7,7 @@ import { PrivateRoute } from './routes/PrivateRoute';
 import { AppLayout } from './components/layout/AppLayout';
 import { Spinner } from './components/common/Spinner';
 
-// Lazy loading views for high performance as required by rubric 3.3
+// Lazy loading views for code-splitting and optimal initial bundle size
 const Login = lazy(() => import('./pages/Login').then((m) => ({ default: m.Login })));
 const Dashboard = lazy(() => import('./pages/Dashboard').then((m) => ({ default: m.Dashboard })));
 const Ventas = lazy(() => import('./pages/Ventas').then((m) => ({ default: m.Ventas })));

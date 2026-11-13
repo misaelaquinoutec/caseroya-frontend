@@ -34,12 +34,12 @@
 ## 3. Introducción
 
 ### Contexto
-La digitalización de las bodegas, minimarkets y comercios minoristas requiere no solo de un motor transaccional seguro en el servidor, sino de interfaces de usuario ágiles, intuitivas y accesibles desde cualquier dispositivo. En el día a día de un punto de venta minorista, el cajero o administrador necesita registrar operaciones en cuestión de segundos, consultar existencias en tiempo real y visualizar el rendimiento financiero del negocio sin fricción técnica.
+La digitalización de las bodegas, minimarkets y comercios minoristas requiere no solo de un motor transaccional seguro en el servidor, sino de interfaces de usuario ágiles, intuitivas y accesibles desde cualquier dispositivo. En el día a día de un punto de venta minorista, el cajero o administrador necesita registrar operaciones en cuestión de segundos, reabastecer mercadería, consultar existencias en tiempo real y visualizar el rendimiento financiero del negocio sin fricción técnica.
 
 ### Objetivos del Proyecto
 El objetivo de esta segunda fase de **CaseroYa** es diseñar, construir y desplegar el ecosistema Frontend conectado de extremo a extremo con nuestra API REST en la nube (**Render + Supabase**).
 Los objetivos específicos incluyen:
-- Implementar una aplicación web moderna en **React + TypeScript** orientada a la gestión rápida de ventas (POS), inventario y reportes.
+- Implementar una aplicación web moderna en **React + TypeScript** orientada a la gestión rápida de ventas (POS), abastecimiento por compras a proveedores, control de inventario, cartera de clientes, administración de operadores y reportes analíticos.
 - Garantizar una arquitectura modular basada en componentes reutilizables, *custom hooks* y estado global con Context API.
 - Proteger la experiencia de usuario mediante autenticación JWT, rutas privadas, manejo centralizado de errores y estados de carga reactivos.
 
@@ -48,36 +48,42 @@ Los objetivos específicos incluyen:
 ## 4. Identificación del Problema o Necesidad
 
 ### Descripción del Problema
-Incluso cuando un comercio minorista cuenta con una base de datos estructurada, el uso de interfaces complejas, lentas o poco intuitivas provoca cuellos de botella en la atención al cliente, errores al digitar cantidades o precios, y desconocimiento del stock disponible al momento de vender.
+Incluso cuando un comercio minorista cuenta con una base de datos estructurada, el uso de interfaces complejas, lentas o poco intuitivas provoca cuellos de botella en la atención al cliente, errores al digitar cantidades o precios, y desconocimiento del stock disponible al momento de vender o reabastecer.
 
 ### Justificación
-Desarrollar una interfaz web reactiva (Single Page Application) que calcule automáticamente subtotales e impuestos (IGV 18%), valide en tiempo real que la cantidad vendida no supere el stock físico disponible y ofrezca búsqueda instantánea con *debounce* reduce drásticamente el tiempo de atención por cliente y elimina los errores operativos en caja.
+Desarrollar una interfaz web reactiva (Single Page Application) que asigne automáticamente el precio unitario de catálogo de cada producto, actualice los importes y el IGV (18%) de forma dinámica al variar la cantidad, valide en tiempo real que la venta no supere el stock físico disponible y ofrezca búsqueda instantánea con *debounce* reduce drásticamente el tiempo de atención por cliente y elimina los errores operativos en caja.
 
 ---
 
 ## 5. Descripción de la Solución
 
 ### Funcionalidades Implementadas
-La plataforma Frontend de **CaseroYa** se divide en módulos funcionales directamente integrados con el backend:
+La plataforma Frontend de **CaseroYa** abarca 8 módulos operativos directamente integrados con todos los controladores del backend:
 
 1. **Autenticación y Control de Sesión (`Login`):**
    - Inicio de sesión validado contra `/api/auth/login`.
-   - Almacenamiento y gestión automática del token JWT y perfil del operador activo.
+   - Almacenamiento y gestión automática del token JWT y perfil del operador activo (`ADM`, `CAJ`, `VEN`).
 2. **Panel Principal (`Dashboard`):**
-   - Resumen ejecutivo con indicadores clave (KPIs): ingresos acumulados, ventas del día, productos activos y alertas automáticas de productos con stock crítico ($\le 10$ unidades).
-   - Accesos rápidos a las operaciones frecuentes y tabla de últimas transacciones.
-3. **Gestión de Inventario y Control de Stock (`Inventario`):**
-   - Catálogo completo de productos con búsqueda reactiva (*debounce*), filtrado por categoría y paginación dinámica.
-   - Creación, edición y eliminación lógica de productos mediante modales interactivos.
-   - Ajuste directo de existencias (aumento y disminución de unidades en almacén) conectado a las funciones transaccionales del servidor.
-4. **Punto de Venta Interactivo (`NuevaVenta`):**
-   - Buscador instantáneo de productos con indicador de stock disponible.
-   - Carrito de compras interactivo con validación de límites de stock, selección de cliente, moneda (Soles `PEN` / Dólares `USD`) y desglose automático de Subtotal, IGV (18%) y Total.
-5. **Historial y Detalle de Ventas (`Ventas` y `DetalleVenta`):**
-   - Listado paginado de comprobantes emitidos con filtro por estado (*Completadas* / *Anuladas*) y buscador por número de documento o cliente.
-   - Vista detallada por comprobante (`/ventas/:id`) con opción de anulación segura y reversión de stock.
-6. **Reportes Financieros (`Reportes`):**
-   - Consulta de ventas por rango de fechas (`desde` / `hasta`) con cálculo de ticket promedio, volumen recaudado y desglose por documento.
+   - Resumen ejecutivo con indicadores clave (KPIs): ingresos acumulados de ventas activas, total de comprobantes emitidos, estado de sincronización del inventario y monitoreo de las últimas transacciones.
+3. **Punto de Venta Interactivo (`NuevaVenta`):**
+   - Asignación automática del precio unitario oficial (`precioVenta`) al seleccionar un producto y recálculo inmediato del importe al incrementar o disminuir la cantidad.
+   - Registro rápido de clientes en vivo (`+ Nuevo Cliente`) mediante ventana modal sin abandonar la venta.
+   - Selección de Tipo de Comprobante (**Boleta de Venta `B001`** o **Factura Electrónica `F001`**) y Moneda (**Soles `PEN`** o **Dólares `USD`**), con desglose automático de Op. Gravada, IGV (18%) y Total.
+4. **Historial y Detalle de Ventas (`Ventas` y `DetalleVenta`):**
+   - Listado paginado de comprobantes emitidos con buscador reactivo, visualización del nombre real del cliente y estado del documento (`REGISTRADO` / `ANULADO`).
+   - Vista detallada e imprimible por comprobante (`/ventas/:id`) con resolución de nombres de productos y opción de anulación segura con reversión automática de stock.
+5. **Gestión de Inventario y Reabastecimiento Rápido (`Inventario`):**
+   - Catálogo completo de productos sincronizado en paralelo con `/api/productos` y `/api/stock`, con búsqueda reactiva (*debounce*), filtrado por categoría y paginación sincronizada con URL.
+   - Creación (`+ Nuevo Producto`), edición y baja lógica de productos mediante modales interactivos.
+   - Reabastecimiento directo de unidades (`+ Stock` conectado a `PUT /api/stock/{id}/aumentar`) cuando un producto tiene stock bajo o agotado.
+6. **Compras y Directorio de Proveedores (`ComprasProveedores`):**
+   - **Órdenes de Compra (`/api/compras`):** Registro de facturas/guías de compra a proveedores que incrementa automáticamente el stock de los productos adquiridos, además de consulta y anulación de compras por ID.
+   - **Proveedores (`/api/proveedores`):** Mantenimiento completo (CRUD) de empresas distribuidoras con RUC, razón social, teléfono y dirección.
+7. **Directorio de Clientes (`Clientes`):**
+   - Mantenimiento completo (CRUD) conectado a `/api/clientes` con soporte para DNI, RUC y Carné de Extranjería, buscador en tiempo real y baja lógica.
+8. **Gestión de Usuarios y Roles (`Usuarios`) y Reportes por Fecha (`Reportes`):**
+   - Administración de cuentas de operadores y cajeros (`/api/usuarios` y `/api/perfiles`) con contraseñas cifradas en BCrypt.
+   - Reportes analíticos filtrados por rango de fechas (`/api/reportes/ventas`) con cálculo de facturación neta, comprobantes válidos vs. anulados y ticket promedio.
 
 ### Tecnologías Utilizadas
 - **Librería Principal:** React 19
@@ -85,7 +91,7 @@ La plataforma Frontend de **CaseroYa** se divide en módulos funcionales directa
 - **Entorno de Construcción:** Vite
 - **Enrutamiento:** React Router DOM v7
 - **Cliente HTTP:** Axios (con interceptores y `AbortController`)
-- **Estilización:** Tailwind CSS v4 (con soporte nativo para Modo Claro / Modo Oscuro)
+- **Estilización:** Tailwind CSS v4 (con soporte completo para Modo Claro y Modo Oscuro)
 - **Iconografía:** Lucide React
 
 ---
@@ -121,13 +127,16 @@ web/src/
 │   ├── useDebounce.ts
 │   ├── useFetch.ts
 │   └── usePagination.ts
-├── pages/               # Vistas principales de la aplicación
+├── pages/               # 11 Vistas principales de la aplicación
 │   ├── Login.tsx
 │   ├── Dashboard.tsx
 │   ├── Inventario.tsx
 │   ├── Ventas.tsx
 │   ├── NuevaVenta.tsx
 │   ├── DetalleVenta.tsx
+│   ├── ComprasProveedores.tsx
+│   ├── Clientes.tsx
+│   ├── Usuarios.tsx
 │   ├── Reportes.tsx
 │   └── NotFound.tsx
 ├── routes/
@@ -150,24 +159,24 @@ web/src/
   - Uso de parámetros de ruta en `/ventas/:id` para consultar el detalle individual de un comprobante.
   - Sincronización bidireccional con *query params* (`?page=1&size=10&search=...`) en los listados de Inventario y Ventas para preservar el estado de navegación al compartir URLs.
 - **Lazy Loading (`React.lazy` + `Suspense`):** Todas las páginas principales se cargan bajo demanda (code-splitting), optimizando el tamaño del paquete inicial.
-- **Indicadores de Ubicación (`Breadcrumbs`) y Ruta 404 (`NotFound`):** Navegación contextual en cada vista y captura de rutas inexistentes.
+- **Indicadores de Ubicación (`Breadcrumbs`) y Ruta 404 (`NotFound`):** Navegación contextual en cada vista, resaltado exacto de ruta activa (`end`) en la barra lateral y captura de rutas inexistentes.
 
 ---
 
 ## 8. Manejo de Errores, Estados de Carga y Validaciones
 
 - **Error Boundary Global (`ErrorBoundary.tsx`):** Captura errores inesperados en el árbol de renderizado de React mostrando una pantalla de recuperación amigable.
-- **Estados de Carga (`Skeleton` y `Spinner`):** Mientras se resuelven las peticiones asíncronas hacia Render y Supabase, la interfaz muestra esqueletos animados y bloquea botones de envío (`isLoading`) para prevenir envíos duplicados (*double-submit*).
+- **Estados de Carga (`Skeleton` y `Spinner`):** Mientras se resuelven las peticiones asíncronas hacia Render y Supabase, la interfaz muestra indicadores de carga y bloquea botones de envío (`isLoading`) para prevenir envíos duplicados (*double-submit*).
 - **Cancelación de Peticiones (`AbortController`):** El hook `useFetch` cancela automáticamente las peticiones HTTP en vuelo si el componente se desmonta antes de recibir respuesta, evitando fugas de memoria.
-- **Validación en Tiempo Real y Feedback (`ToastContext`):** Validaciones de campos obligatorios, precios mayores a cero y stock suficiente antes de emitir solicitudes, acompañadas de notificaciones flotantes (*toasts*) de éxito, advertencia o error.
+- **Validación en Tiempo Real y Feedback (`ToastContext`):** Validaciones de campos obligatorios, precios mayores a cero y stock suficiente antes de emitir solicitudes, acompañadas de notificaciones flotantes (*toasts*) de éxito, información o error.
 
 ---
 
 ## 9. Diseño Visual y Experiencia de Usuario (UI/UX)
 
-- **Diseño Responsivo y Consistente:** Interfaz adaptable a pantallas móviles, tablets y monitores de escritorio mediante grillas flexibles y barra lateral colapsable.
-- **Modo Oscuro (`Dark Mode`):** Selector integrado en la barra superior (`Navbar.tsx`) con persistencia en `localStorage`, adaptando toda la paleta visual para entornos de baja iluminación.
-- **Confirmación de Acciones Destructivas:** Uso de modales de confirmación antes de dar de baja un producto o anular un comprobante de venta.
+- **Diseño Responsivo y Consistente:** Interfaz adaptable a distintas resoluciones de pantalla mediante grillas flexibles y barra de navegación lateral estructurada.
+- **Modo Claro y Modo Oscuro (`Dark Mode`):** Selector integrado en la barra superior (`Navbar.tsx`) con persistencia en `localStorage`, adaptando fondos, tarjetas, tablas, formularios y etiquetas de estado (`Badge`) con alto contraste.
+- **Confirmación de Acciones Destructivas:** Uso de modales de confirmación antes de inactivar registros o anular comprobantes de venta.
 - **Paginación Completa (`Pagination.tsx`):** Controles intuitivos de página anterior, siguiente, numeración directa, selector de tamaño de página (`10`, `25`, `50`, `100` registros) y contador de resultados (`Mostrando X - Y de Z resultados`).
 
 ---
@@ -176,13 +185,13 @@ web/src/
 
 La comunicación con el servidor se centraliza en `src/services/api.ts`:
 - **Interceptor de Solicitud (Request):** Adjunta automáticamente el encabezado `Authorization: Bearer <token>` en cada llamada hacia la API REST.
-- **Interceptor de Respuesta (Response):** Detecta respuestas `401 Unauthorized` (token expirado o inválido), limpia la sesión local y redirige de forma segura a `/login`. Asimismo, extrae los mensajes semánticos enviados por el `GlobalExceptionHandler` del backend.
+- **Interceptor de Respuesta (Response):** Detecta respuestas `401 Unauthorized` (token expirado o inválido), limpia la sesión local y redirige de forma segura a `/login`. Asimismo, normaliza los DTOs provenientes del servidor y extrae los mensajes semánticos enviados por el `GlobalExceptionHandler` del backend.
 
 ---
 
 ## 11. GitHub & Project Management
 
-- **Organización Modular:** Separación limpia entre `/web` y `/mobile` dentro del repositorio de Frontend.
+- **Organización Modular:** Separación limpia dentro del repositorio de Frontend.
 - **Control de Versiones:** Uso de `.gitignore` para excluir dependencias (`node_modules`), compilados (`dist`) y archivos de variables de entorno locales (`.env`), manteniendo una plantilla `.env.example` documentada.
 
 ---
@@ -220,7 +229,7 @@ La comunicación con el servidor se centraliza en `src/services/api.ts`:
 ## 13. Conclusión
 
 ### Logros del Proyecto
-Con el desarrollo del Frontend de **CaseroYa**, se completó la integración de punta a punta entre la interfaz de usuario, la API REST en Spring Boot desplegada en Render y la base de datos PostgreSQL en Supabase. La aplicación resultante ofrece una experiencia fluida, segura y veloz que digitaliza por completo el flujo operativo de un negocio minorista.
+Con el desarrollo del Frontend de **CaseroYa**, se completó la integración de punta a punta entre la interfaz de usuario, la API REST en Spring Boot desplegada en Render y la base de datos PostgreSQL en Supabase. La aplicación resultante ofrece una experiencia fluida, segura y veloz que digitaliza por completo el flujo comercial, de abastecimiento y de control de inventario de un negocio minorista.
 
 ### Aprendizajes Clave
 El equipo consolidó el dominio de patrones modernos en React con TypeScript: diseño de componentes desacoplados, creación de *custom hooks* para encapsular lógica de red y paginación, manejo de ciclo de vida de peticiones con `AbortController` y sincronización de estado con parámetros de URL.

@@ -79,7 +79,7 @@ export const Ventas: React.FC = () => {
     initialPageSize: initialSize,
   });
 
-  // Sync state to URL Query Params (Rubric 4.4)
+  // Sync state to URL Query Params
   useEffect(() => {
     const params: Record<string, string> = {};
     if (currentPage > 1) params.page = currentPage.toString();
