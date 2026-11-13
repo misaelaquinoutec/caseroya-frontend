@@ -134,7 +134,7 @@ export const Dashboard: React.FC = () => {
                   <tr key={v.id} className="hover:bg-slate-50/70 transition-colors">
                     <td className="py-2.5 px-3 font-semibold text-slate-800">#{v.id}</td>
                     <td className="py-2.5 px-3 text-xs">{v.fechaCreacion || 'Hoy'}</td>
-                    <td className="py-2.5 px-3">Cliente #{v.clienteId}</td>
+                    <td className="py-2.5 px-3">{v.nombreCliente || `Cliente #${v.clienteId}`}</td>
                     <td className="py-2.5 px-3 font-bold text-slate-900">S/ {(v.total || 0).toFixed(2)}</td>
                     <td className="py-2.5 px-3">
                       <Badge variant={v.estado === 'ANULADO' ? 'danger' : 'success'}>

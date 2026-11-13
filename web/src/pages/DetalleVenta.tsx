@@ -7,6 +7,7 @@ import { Spinner } from '../components/common/Spinner';
 import { Modal } from '../components/common/Modal';
 import { useToast } from '../context/ToastContext';
 import { ventaService } from '../services/ventaService';
+import { productoService } from '../services/productoService';
 import type { Venta } from '../types';
 import { ArrowLeft, Ban, Printer, Calendar, User, DollarSign } from 'lucide-react';
 
@@ -16,6 +17,7 @@ export const DetalleVenta: React.FC = () => {
   const toast = useToast();
 
   const [venta, setVenta] = useState<Venta | null>(null);
+  const [productosMap, setProductosMap] = useState<Record<number, string>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isAnularModalOpen, setIsAnularModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,7 +27,15 @@ export const DetalleVenta: React.FC = () => {
     const fetchVenta = async () => {
       setIsLoading(true);
       try {
-        const data = await ventaService.obtenerVentaPorId(Number(id));
+        const [data, prods] = await Promise.all([
+          ventaService.obtenerVentaPorId(Number(id)),
+          productoService.obtenerProductos().catch(() => []),
+        ]);
+        const map: Record<number, string> = {};
+        prods.forEach((p) => {
+          map[p.id] = p.nombre;
+        });
+        setProductosMap(map);
         setVenta(data);
       } catch (err) {
         toast.error((err as Error)?.message || 'No se pudo cargar el detalle de la venta');
@@ -174,7 +184,7 @@ export const DetalleVenta: React.FC = () => {
                   <tr key={index} className="hover:bg-slate-50/60">
                     <td className="py-3 px-3.5 text-xs text-slate-400">{index + 1}</td>
                     <td className="py-3 px-3.5 font-medium text-slate-800">
-                      {d.nombreProducto || `Producto ID #${d.productoId}`}
+                      {d.nombreProducto || productosMap[d.productoId] || `Producto ID #${d.productoId}`}
                     </td>
                     <td className="py-3 px-3.5 text-center font-semibold text-slate-700">{d.cantidad}</td>
                     <td className="py-3 px-3.5 text-right text-xs">S/ {d.precioUnitario?.toFixed(2)}</td>

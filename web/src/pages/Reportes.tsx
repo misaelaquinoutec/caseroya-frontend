@@ -178,7 +178,7 @@ export const Reportes: React.FC = () => {
                   <tr key={v.id} className="hover:bg-slate-50/70">
                     <td className="py-3 px-3.5 font-semibold text-slate-800">#{v.id}</td>
                     <td className="py-3 px-3.5 text-xs text-slate-500">{v.fechaCreacion || 'Hoy'}</td>
-                    <td className="py-3 px-3.5">Cliente #{v.clienteId}</td>
+                    <td className="py-3 px-3.5">{v.nombreCliente || `Cliente #${v.clienteId}`}</td>
                     <td className="py-3 px-3.5 text-xs">{v.usuarioId}</td>
                     <td className="py-3 px-3.5 text-xs">S/ {(v.subtotal || 0).toFixed(2)}</td>
                     <td className="py-3 px-3.5 text-xs">S/ {(v.igv || 0).toFixed(2)}</td>

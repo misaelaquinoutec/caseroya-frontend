@@ -1,6 +1,15 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, ShoppingCart, PlusCircle, Package, FileBarChart } from 'lucide-react';
+import {
+  LayoutDashboard,
+  ShoppingCart,
+  PlusCircle,
+  Package,
+  Users,
+  Truck,
+  ShieldCheck,
+  FileBarChart,
+} from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
   const navItems = [
@@ -8,6 +17,9 @@ export const Sidebar: React.FC = () => {
     { to: '/ventas', label: 'Ventas Realizadas', icon: <ShoppingCart className="w-5 h-5" /> },
     { to: '/ventas/nueva', label: 'Nueva Venta', icon: <PlusCircle className="w-5 h-5" /> },
     { to: '/inventario', label: 'Inventario & Stock', icon: <Package className="w-5 h-5" /> },
+    { to: '/compras', label: 'Compras & Proveedores', icon: <Truck className="w-5 h-5" /> },
+    { to: '/clientes', label: 'Clientes', icon: <Users className="w-5 h-5" /> },
+    { to: '/usuarios', label: 'Usuarios & Roles', icon: <ShieldCheck className="w-5 h-5" /> },
     { to: '/reportes', label: 'Reportes por Fecha', icon: <FileBarChart className="w-5 h-5" /> },
   ];
 

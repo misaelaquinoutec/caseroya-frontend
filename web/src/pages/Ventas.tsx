@@ -172,7 +172,9 @@ export const Ventas: React.FC = () => {
                         </Link>
                       </td>
                       <td className="py-3 px-3.5 text-xs text-slate-500">{v.fechaCreacion || 'Hoy'}</td>
-                      <td className="py-3 px-3.5 font-medium text-slate-700">Cliente #{v.clienteId}</td>
+                      <td className="py-3 px-3.5 font-medium text-slate-700">
+                        {v.nombreCliente || `Cliente #${v.clienteId}`}
+                      </td>
                       <td className="py-3 px-3.5 text-xs font-mono">{v.usuarioId}</td>
                       <td className="py-3 px-3.5 text-xs">S/ {(v.subtotal || 0).toFixed(2)}</td>
                       <td className="py-3 px-3.5 text-xs">S/ {(v.igv || 0).toFixed(2)}</td>

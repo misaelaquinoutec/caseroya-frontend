@@ -14,6 +14,11 @@ const Ventas = lazy(() => import('./pages/Ventas').then((m) => ({ default: m.Ven
 const DetalleVenta = lazy(() => import('./pages/DetalleVenta').then((m) => ({ default: m.DetalleVenta })));
 const NuevaVenta = lazy(() => import('./pages/NuevaVenta').then((m) => ({ default: m.NuevaVenta })));
 const Inventario = lazy(() => import('./pages/Inventario').then((m) => ({ default: m.Inventario })));
+const Clientes = lazy(() => import('./pages/Clientes').then((m) => ({ default: m.Clientes })));
+const ComprasProveedores = lazy(() =>
+  import('./pages/ComprasProveedores').then((m) => ({ default: m.ComprasProveedores }))
+);
+const Usuarios = lazy(() => import('./pages/Usuarios').then((m) => ({ default: m.Usuarios })));
 const Reportes = lazy(() => import('./pages/Reportes').then((m) => ({ default: m.Reportes })));
 const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })));
 
@@ -46,6 +51,9 @@ export const App: React.FC = () => {
                   <Route path="ventas/:id" element={<DetalleVenta />} />
                   <Route path="ventas/nueva" element={<NuevaVenta />} />
                   <Route path="inventario" element={<Inventario />} />
+                  <Route path="clientes" element={<Clientes />} />
+                  <Route path="compras" element={<ComprasProveedores />} />
+                  <Route path="usuarios" element={<Usuarios />} />
                   <Route path="reportes" element={<Reportes />} />
                 </Route>
 
