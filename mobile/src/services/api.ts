@@ -1,7 +1,8 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { storage } from './storage';
 
-export const API_BASE_URL = 'http://10.0.2.2:8080/api'; // 10.0.2.2 for Android Emulator, or local IP for Expo Go
+export const API_BASE_URL =
+  process.env.EXPO_PUBLIC_API_URL || 'https://proyecto-caseroya-cr2n.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,

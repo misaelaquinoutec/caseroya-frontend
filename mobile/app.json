@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "CaseroYa",
+    "slug": "caseroya",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,6 +23,18 @@
     },
     "plugins": [
       "expo-secure-store"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "e31a4799-ffda-47c4-8c71-b0656a1dd849"
+      }
+    },
+    "owner": "enzo.calderon",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e31a4799-ffda-47c4-8c71-b0656a1dd849"
+    }
   }
 }
