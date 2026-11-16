@@ -2,7 +2,7 @@ import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { storage } from './storage';
 
 export const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL || 'https://proyecto-caseroya-cr2n.onrender.com/api';
+  process.env.EXPO_PUBLIC_API_URL || 'https://2bmevhgp2m.execute-api.us-east-1.amazonaws.com/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,

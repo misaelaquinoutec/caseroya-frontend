@@ -5,10 +5,10 @@ Frontend web (React) y mobile (React Native + Expo) del sistema de inventario y 
 
 ## Participación de los integrantes
 
-| Integrante | Código | Principales aportes | Participación |
-|---|---|---|---|
-| Misael Osvaldo Aquino Hidalgo | 202510626 | POR COMPLETAR | 100 % |
-| Enzo Mathias Calderon Soto | 202510032 | POR COMPLETAR | 100 % |
+| Integrante | Código | Participación |
+|---|---|---|
+| Misael Osvaldo Aquino Hidalgo | 202510626 | 100 % |
+| Enzo Mathias Calderon Soto | 202510032 | 100 % |
 
 ## Estructura del repositorio
 
@@ -17,10 +17,11 @@ Frontend web (React) y mobile (React Native + Expo) del sistema de inventario y 
 
 ## URLs públicas
 
-- **Backend API:** https://proyecto-caseroya-cr2n.onrender.com
-- **Swagger UI:** https://proyecto-caseroya-cr2n.onrender.com/swagger-ui/index.html
+- **Backend API (AWS Elastic Beanstalk + API Gateway, HTTPS):** https://2bmevhgp2m.execute-api.us-east-1.amazonaws.com
+- **Swagger UI:** https://2bmevhgp2m.execute-api.us-east-1.amazonaws.com/swagger-ui/index.html
+- **Backend API de respaldo (Render):** https://proyecto-caseroya-cr2n.onrender.com
 - **Frontend web (Vercel):** https://casero-ya.vercel.app
-- **App mobile (Expo / EAS Update):** https://expo.dev/accounts/enzo.calderon/projects/caseroya/updates/887c62a2-e21e-48e6-b19b-7652acf29f88
+- **App mobile (Expo / EAS Update):** https://expo.dev/accounts/enzo.calderon/projects/caseroya/updates/6ac8b9ec-7290-49d4-ae07-6d75d4bbb5e7
 
 ## Ejecución local
 
